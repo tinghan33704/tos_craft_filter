@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2019.11.30 23:33 -->
+<!-- Last modified : 2019.12.21 16:59 -->
 <head>
     <title>神魔之塔龍刻搜尋器</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
     <script src="./js/jquery.min.js"></script>
+    <script src="./js/popper.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
     <script src="./js/data.js"></script>
 </head>
@@ -104,6 +105,17 @@
         display: none;
     }
     
+    .tooltip-inner {
+        max-width: 500px;
+        font-size: 1.4em;
+        word-wrap: break-word;
+        text-align: left;
+        white-space: pre-line;
+    }
+    .skill_tooltip {
+        font-family: Microsoft JhengHei;
+        margin: 5px;
+    }
     
 </style>
 
@@ -467,15 +479,32 @@
             filter_set.add(x.id);
         }
         
-        var monster_array = Array.from(filter_set);
+        var craft_array = Array.from(filter_set);
         $(".result-row").html(function()
         {
             var str = "";
-            if(monster_array.length != 0)
+            if(craft_array.length != 0)
             {
-                monster_array.sort((a, b) => a - b);
-                monster_array.forEach(function(x) {
-                    str += "<div class=\"col-sm-1 result\"><a href=\"http://tosapp.mofang.com.tw/rk-"+x+".html\" target=\"_blank\"><img class=\"monster_img\" src=\"./img/"+x+".png\" title=\""+x+"\" onerror=\"this.src='./img/noname.png'\"></img></a><div class=\"monsterId\">"+paddingZeros(x, 3)+"</div></div>";
+                craft_array.sort((a, b) => a - b);
+                craft_array.forEach(function(x) {
+                
+                    var sk_str = "";
+                    var skill_cnt = 0;
+                    
+                    var skill = craft_data.find(function(element){
+                        return element.id == x;
+                    }).description;
+                    
+                    for(var s of skill)
+                    {
+                        if(skill_cnt > 0) sk_str += "<hr style='margin: 5px 0;'>";
+                    
+                        skill_cnt ++;
+                        sk_str += "<div class='skill_tooltip skill_description'><img src='./img/skill_"+skill_cnt+".png' />&nbsp;"+s+"</div>";
+                    }
+                    
+                    
+                    str += "<div class=\"col-sm-1 result\" data-toggle=\"tooltip\" data-html=\"true\" title=\""+sk_str+"\"><a href=\"http://tosapp.mofang.com.tw/rk-"+x+".html\" target=\"_blank\"><img class=\"monster_img\" src=\"./img/"+x+".png\" title=\""+x+"\" onerror=\"this.src='./img/noname.png'\"></img></a><div class=\"monsterId\">"+paddingZeros(x, 3)+"</div></div>";
                 });
             }
             else
@@ -484,6 +513,8 @@
             }
             return str;
         });
+        
+        $('.result').tooltip({ boundary: 'scrollParent', placement: 'auto', container: 'body'});
         
         $(".search_tag").html(function(){
             var tag_html = "";
