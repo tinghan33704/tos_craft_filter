@@ -226,6 +226,8 @@ select {
     background-color: var(--monsterid_color);
     color: var(--text_monsterid_color);
     font-weight: bold;
+    font-size: 1em;
+    
 }
 
 .tooltip-inner {
