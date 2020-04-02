@@ -302,6 +302,9 @@ select {
     bottom: 1rem;
     display: inline-block;
 }
+.changeTheme:focus {
+    outline: none;
+}
 
 #keyword-input {
     font-size: 1em;
