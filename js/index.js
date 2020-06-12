@@ -563,7 +563,7 @@ function startFilter()
         }
         else
         {
-            str = "<div class='col-sm-12' style=\"text-align: center; color: #888888;\"><h1>查無結果</h1></div>";
+            str = "<div class='col-12' style=\"padding-top: 20px; text-align: center; color: #888888;\"><h1>查無結果</h1></div>";
         }
         return str;
     });
