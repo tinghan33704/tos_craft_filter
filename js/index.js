@@ -554,11 +554,11 @@ function startFilter()
                     if(skill_cnt > 0) sk_str += "<hr style='margin: 5px 0;'>";
                 
                     skill_cnt ++;
-                    sk_str += "<div class='skill_tooltip skill_description'><img src='./img/skill_"+skill_cnt+".png' />&nbsp;"+s+"</div>";
+                    sk_str += "<div class='skill_tooltip skill_description'><img src='../tos_tool_data/img/craft/skill_"+skill_cnt+".png' />&nbsp;"+s+"</div>";
                 }
                 
                 
-                str += "<div class=\"col-3 col-md-2 col-lg-1  result\" data-toggle=\"tooltip\" data-html=\"true\" title=\""+sk_str+"\"><a href=\"http://tosapp.mofang.com.tw/rk-"+x+".html\" target=\"_blank\"><img class=\"monster_img\" src=\"./img/"+x+".png\" title=\""+x+"\" onerror=\"this.src='./img/noname.png'\"></img></a><div class=\"monsterId\">"+paddingZeros(x, 3)+"</div></div>";
+                str += "<div class=\"col-3 col-md-2 col-lg-1  result\" data-toggle=\"tooltip\" data-html=\"true\" title=\""+sk_str+"\"><a href=\"http://tosapp.mofang.com.tw/rk-"+x+".html\" target=\"_blank\"><img class=\"monster_img\" src=\"../tos_tool_data/img/craft/"+x+".png\" title=\""+x+"\" onerror=\"this.src='../tos_tool_data/img/craft/noname.png'\"></img></a><div class=\"monsterId\">"+paddingZeros(x, 3)+"</div></div>";
             });
         }
         else
