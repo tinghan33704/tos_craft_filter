@@ -557,8 +557,14 @@ function startFilter()
                     sk_str += "<div class='skill_tooltip skill_description'><img src='../tos_tool_data/img/craft/skill_"+skill_cnt+".png' />&nbsp;"+s+"</div>";
                 }
                 
-                
+                /*
                 str += "<div class=\"col-3 col-md-2 col-lg-1  result\" data-toggle=\"tooltip\" data-html=\"true\" title=\""+sk_str+"\"><a href=\"http://tosapp.mofang.com.tw/rk-"+x+".html\" target=\"_blank\"><img class=\"monster_img\" src=\"../tos_tool_data/img/craft/"+x+".png\" title=\""+x+"\" onerror=\"this.src='../tos_tool_data/img/craft/noname.png'\"></img></a><div class=\"monsterId\">"+paddingZeros(x, 3)+"</div></div>";
+                */
+                    
+                str += "<div class=\"col-3 col-md-2 col-lg-1 result\">"+
+                                "<img class=\"monster_img\" src=\"../tos_tool_data/img/craft/"+x+".png\" onerror=\"this.src='../tos_tool_data/img/craft/noname.png'\" tabindex="+x+" data-toggle=\"popover\" data-title=\"\" data-content=\""+sk_str+"\"></img>"+
+                            "<div class=\"monsterId\"><a href=\"https://tos.fandom.com/zh/wiki/"+x+"\" target=\"_blank\">"+paddingZeros(x, 3)+"</a></div>"+
+                        "</div>";
             });
         }
         else
@@ -595,6 +601,13 @@ function startFilter()
             tag_html += '<div class="tag_wrapper"><div class="genre_tag" title="'+element+'">'+element+'</div></div>';
         });
         return tag_html;
+    });
+    
+    $('[data-toggle=popover]').popover({
+      container: 'body',
+      html: true,
+      trigger: 'focus',
+      placement: 'bottom'
     });
     
     jumpTo("result_title");
