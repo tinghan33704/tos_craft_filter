@@ -558,7 +558,7 @@ function startFilter()
                     
                 str += "<div class=\"col-3 col-md-2 col-lg-1 result\">"+
                                 "<img class=\"monster_img\" src=\"../tos_tool_data/img/craft/"+x+".png\" onerror=\"this.src='../tos_tool_data/img/craft/noname.png'\" tabindex="+x+" data-toggle=\"popover\" data-title=\"\" data-content=\""+sk_str+"\"></img>"+
-                            "<div class=\"monsterId\"><a href=\"https://tos.fandom.com/zh/wiki/"+x+"\" target=\"_blank\">"+paddingZeros(x, 3)+"</a></div>"+
+                            "<div class=\"monsterId\"><a href=\"http://tosapp.mofang.com.tw/rk-"+x+".html\" target=\"_blank\">"+paddingZeros(x, 3)+"</a></div>"+
                         "</div>";
             });
         }
