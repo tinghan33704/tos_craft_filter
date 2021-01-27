@@ -180,6 +180,11 @@ function init()
     
     or_filter = true;
     keyword_search = false;
+
+    $(".copyright").html(function() {
+        let year = new Date().getFullYear();
+        return "Copyright © 2019-" + year + " 蒼曜"
+    });
 }
 
 function keywordSwitch()
@@ -238,11 +243,14 @@ function startFilter()
                 skill_select = true;
             }
         });
+        
+        /*
         if(keyword_search == false && skill_select == false)
         {
             errorAlert(2);
             return ;
         }
+        */
         
         var mode_set = new Set();
         var mode_intersect = false;
