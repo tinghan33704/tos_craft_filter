@@ -220,7 +220,7 @@ function renderCraftImage(craft_id, sk_str) {
         <div class="col-3 col-md-2 col-lg-1 result">
             <img class="monster_img" src="../tos_tool_data/img/craft/${craft_id}.png" onerror="this.src='../tos_tool_data/img/craft/noname.png'" tabindex=${craft_id} data-toggle="popover" data-title="" data-content="${sk_str}"></img>
             <div class="monsterId">
-                <a href="http://tosapp.tw/rk-${craft_id}.html" target="_blank">
+                <a href="https://tos.fandom.com/zh/wiki/C${paddingZeros(craft_id, 2)}" target="_blank">
                     ${paddingZeros(craft_id, 3)}
                 </a>
             </div>
