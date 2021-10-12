@@ -45,7 +45,6 @@ function startFilter()
         [charge_set, isChargeSelected] = getSelectedButton('charge');
         
         $.each(craft_data, (index, craft) => {
-
             if( (isModeSelected && !mode_set.has(craft.mode)) || 
                 (isAttrSelected && !attr_set.has(craft.attribute)) || 
                 (isRaceSelected && !race_set.has(craft.race)) || 
