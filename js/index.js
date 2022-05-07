@@ -2,7 +2,6 @@ const tool_id = 'craft';
 
 let filter_set = new Set();
 let or_filter = true;
-let keyword_search = false;
 let theme = 'normal';
 
 $(document).ready(function(){
@@ -33,112 +32,97 @@ function startFilter()
     let isStarSelected = false;
     let isChargeSelected = false;
     
-    if(keyword_search == false)
-    {
-        filter_set.clear();
-    
-        [skill_set, isSkillSelected] = getSelectedButton('filter');
-        [mode_set, isModeSelected] = getSelectedButton('mode');
-        [attr_set, isAttrSelected] = getSelectedButton('attr');
-        [race_set, isRaceSelected] = getSelectedButton('race');
-        [star_set, isStarSelected] = getSelectedButton('star', true);
-        [charge_set, isChargeSelected] = getSelectedButton('charge');
-        
-        $.each(craft_data, (index, craft) => {
-            if( (isModeSelected && !mode_set.has(craft.mode)) || 
-                (isAttrSelected && !attr_set.has(craft.attribute)) || 
-                (isRaceSelected && !race_set.has(craft.race)) || 
-                (isStarSelected && !star_set.has(craft.star)) || 
-                (isChargeSelected && !charge_set.has(craft.charge))) return;
-                
-            if(isSkillSelected) {
-                let skill_num_array = [];
-                
-                if(or_filter)       // OR
-                {
-                    let isSkillMatch = false;
-                    $.each([...skill_set], (skill_set_index, selected_feat) => {
-                        if(craft.tag.includes(selected_feat)) {
-                            isSkillMatch = true;
-                            return false;
-                        }
-                    })
-                    
-                    if(!isSkillMatch) return;
-                }
-                else       // AND
-                {
-                    let isSkillMatch = true;
-                    
-                    $.each([...skill_set], (skill_set_index, selected_feat) => {
-                        if(!(craft.tag.includes(selected_feat))) {
-                            isSkillMatch = false;
-                            return false;
-                        }
-                    })
-                    
-                    if(!isSkillMatch) return;
-                }
-            }
-            craft.tag.length > 0 && filter_set.add(craft.id);
-        })
-    }
-    else        // keyword search mode
-    {
-        filter_set.clear();
-    
-        let keyword_set = checkKeyword();
-        if(!keyword_set) return;
-        
-        [mode_set, isModeSelected] = getSelectedButton('mode');
-        [attr_set, isAttrSelected] = getSelectedButton('attr');
-        [race_set, isRaceSelected] = getSelectedButton('race');
-        [star_set, isStarSelected] = getSelectedButton('star', true);
-        [charge_set, isChargeSelected] = getSelectedButton('charge');
-        
-        $.each(craft_data, (index, craft) => {
-            if( (isModeSelected && !mode_set.has(craft.mode)) || 
-                (isAttrSelected && !attr_set.has(craft.attribute)) || 
-                (isRaceSelected && !race_set.has(craft.race)) || 
-                (isStarSelected && !star_set.has(craft.star)) || 
-                (isChargeSelected && !charge_set.has(craft.charge))) return;
-            
-            $.each(craft.description, (desc_index, skill_desc) => {
-                
-                let sanitized_skill_desc = textSanitizer(skill_desc);
-                
-                if(or_filter)
-                {
-                    let isKeywordChecked = false;
-                    
-                    $.each([...keyword_set], (keyword_index, keyword) => {
-                        if(sanitized_skill_desc.includes(keyword))
-                        {
-                            isKeywordChecked = true;
-                            return false;
-                        }
-                    })
-                    
-                    if(!isKeywordChecked) return;
-                }
-                else
-                {
-                    let isKeywordChecked = true;
-                    
-                    $.each([...keyword_set], (keyword_index, keyword) => {
-                        if(!sanitized_skill_desc.includes(keyword))
-                        {
-                            isKeywordChecked = false;
-                            return false;
-                        }
-                    })
-                    
-                    if(!isKeywordChecked) return;
-                }
-                craft.tag.length > 0 && filter_set.add(craft.id);
-            })
-        })
-    }
+    filter_set.clear();
+	let keyword_set = checkKeyword();
+
+	[skill_set, isSkillSelected] = getSelectedButton('filter');
+	[mode_set, isModeSelected] = getSelectedButton('mode');
+	[attr_set, isAttrSelected] = getSelectedButton('attr');
+	[race_set, isRaceSelected] = getSelectedButton('race');
+	[star_set, isStarSelected] = getSelectedButton('star', true);
+	[charge_set, isChargeSelected] = getSelectedButton('charge');
+	
+	$.each(craft_data, (index, craft) => {
+		if( (isModeSelected && !mode_set.has(craft.mode)) || 
+			(isAttrSelected && !attr_set.has(craft.attribute)) || 
+			(isRaceSelected && !race_set.has(craft.race)) || 
+			(isStarSelected && !star_set.has(craft.star)) || 
+			(isChargeSelected && !charge_set.has(craft.charge))) return;
+			
+		if(isSkillSelected || keyword_set) {
+			let skill_num_array = [];
+			
+			if(or_filter)       // OR
+			{
+				// Check for skill tags
+				let isSkillMatch = false;
+				$.each([...skill_set], (skill_set_index, selected_feat) => {
+					if(craft.tag.includes(selected_feat)) {
+						isSkillMatch = true;
+						return false;
+					}
+				})
+				
+				if(!isSkillMatch && keyword_set.size == 0) return;
+				
+				// Check for keywords
+				if(!isSkillMatch && keyword_set.size > 0) {
+					let isKeywordChecked = false;
+					
+					$.each([...keyword_set], (keyword_index, keyword) => {
+						$.each(craft.description, (desc_index, desc) => {
+							const sanitized_skill_desc = textSanitizer(desc);
+							if(sanitized_skill_desc.includes(keyword))
+							{
+								isKeywordChecked = true;
+								return false;
+							}
+						})
+						
+						if(isKeywordChecked) return false;
+					})
+					
+					if(!isKeywordChecked) return;
+				}
+			}
+			else       // AND
+			{
+				// Check for skill tags
+				let isSkillMatch = true;
+				
+				$.each([...skill_set], (skill_set_index, selected_feat) => {
+					if(!(craft.tag.includes(selected_feat))) {
+						isSkillMatch = false;
+						return false;
+					}
+				})
+				
+				if(!isSkillMatch) return;
+				
+				// Check for keywords
+				let isAllKeywordChecked = true;
+				$.each([...keyword_set], (keyword_index, keyword) => {
+					let isKeywordChecked = false;
+					$.each(craft.description, (desc_index, desc) => {
+						const sanitized_skill_desc = textSanitizer(desc);
+						if(sanitized_skill_desc.includes(keyword))
+						{
+							isKeywordChecked = true;
+							return false;
+						}
+					})
+					
+					if(!isKeywordChecked) {
+						isAllKeywordChecked = false;
+						return false;
+					}
+				})
+				
+				if(!isAllKeywordChecked) return;
+			}
+		}
+		craft.tag.length > 0 && filter_set.add(craft.id);
+	})
     
     
     $(".row.result-row").show();
@@ -174,7 +158,8 @@ function startFilter()
     $(".search_tag").html(function(){
         let tag_html = "";
         
-        tag_html += (!keyword_search) ? renderTags(skill_set, 'skill') : '';
+        tag_html += renderTags(skill_set, 'skill');
+        tag_html += renderTags(keyword_set, 'keyword');
         tag_html += renderTags(mode_set, 'genre');
         tag_html += renderTags(attr_set, 'genre');
         tag_html += renderTags(race_set, 'genre');
