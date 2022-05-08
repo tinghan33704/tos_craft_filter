@@ -49,7 +49,7 @@ function startFilter()
 			(isStarSelected && !star_set.has(craft.star)) || 
 			(isChargeSelected && !charge_set.has(craft.charge))) return;
 			
-		if(isSkillSelected || keyword_set) {
+		if(isSkillSelected || keyword_set.size > 0) {
 			let skill_num_array = [];
 			
 			if(or_filter)       // OR
